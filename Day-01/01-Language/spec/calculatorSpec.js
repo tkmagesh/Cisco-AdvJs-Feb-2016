@@ -50,7 +50,7 @@ describe("A Calculator", function(){
 	it("Should be able to add two functions returning numbers in string format", function(){
 		//Arrange
 		var f1 = function(){ return "10";},
-			f2 = function(){ return "20";},
+			f2 = function(){ return "[20]";},
 			expectedResult = 30;
 
 		//Act
