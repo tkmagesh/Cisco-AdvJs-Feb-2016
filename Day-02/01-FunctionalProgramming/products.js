@@ -250,3 +250,56 @@ console.describe('Aggregate', function(){
 
 });
 
+    function aggregate(list, aggregatorFn, seed){
+        var start = 0,
+            result = seed;
+        if (seed === undefined){
+            start = 1;
+            result = list[0];
+        }
+        for(var i=start; i<list.length; i++)
+            result = aggregatorFn(result, list[i]);
+        return result;
+    }
+console.describe('GroupBy', function(){
+    /*function groupBy(list, keySelectorFn){
+        var result = {};
+        for(var i=0; i<list.length; i++){
+            var key = keySelectorFn(list[i]);
+            if (result[key] === undefined)
+                result[key] = [];
+            result[key].push(list[i]);
+        }
+        return result;
+    }*/
+    function groupBy(list, keySelectorFn){
+        return aggregate(list, function(result, item){
+            var key = keySelectorFn(item);
+            result[key] = result[key] || [];
+            result[key].push(item);
+            return result;
+        },{})
+    }
+    function printGroup(group){
+        for(var key in group){
+            console.describe('Key - ' + key, function(){
+                console.table(group[key]);
+            });
+        }
+    }
+
+    console.describe("Products By Category", function(){
+        var productsByCategory = groupBy(products, function(product){
+            return product.category;
+        });
+        printGroup(productsByCategory);
+    });
+
+    console.describe("Products By Cost", function(){
+        var productsByCost = groupBy(products, function(product){
+            return product.cost > 100 ? "costly" : "affordable"
+        });
+        printGroup(productsByCost);
+    });
+});
+
