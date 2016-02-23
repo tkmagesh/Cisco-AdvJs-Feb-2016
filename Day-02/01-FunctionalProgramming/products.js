@@ -212,7 +212,7 @@ console.describe('Aggregate', function(){
             result = list[0];
         }
         for(var i=start; i<list.length; i++)
-            aggregatorFn(result, list[i]);
+            result = aggregatorFn(result, list[i]);
         return result;
     }
 
@@ -240,13 +240,10 @@ console.describe('Aggregate', function(){
     });
 
     var sumOfCostAndCount = aggregate(products, function(result, product){
-        /*return {
+        return {
             totalCost : result.totalCost + product.cost,
             count : ++result.count
-        };*/
-        console.log(result);
-        result.totalCost += product.cost;
-        ++result.count;
+        };
     },{totalCost : 0, count : 0});
     var averageCost = sumOfCostAndCount.totalCost / sumOfCostAndCount.count;
     console.log('Average Cost = ', averageCost);
