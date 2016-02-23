@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+    (function(){
+        var divMessages = null;
+        var worker = null;
+
+        window.addEventListener("DOMContentLoaded", init);
+
+        function init(){
+            var btnDoWork = document.getElementById("btnDoWork");
+            btnDoWork.addEventListener("click", onBtnDoWork);
+            divMessages = document.getElementById("divMessages");
+
+            worker = new Worker('doWorkWorker.js');
+            worker.addEventListener('message', onWorkerMessage);
+        }
+        function onWorkerMessage(evtArg){
+            if (evtArg.data === 'done'){
+                displayMessage("Work Completed");
+            }
+        }
+        function onBtnDoWork(){
+            displayMessage("Work STarted");
+            worker.postMessage('start');
+        }
+
+        function displayMessage(msg){
+            divMessages.innerHTML += msg + "<br>";
+        }
+    })();
+    </script>
+</head>
+<body>
+    <input type="text" name="" id="">
+    <input type="button" value="Do Work" id="btnDoWork">
+    <div id="divMessages"></div>
+</body>
+</html>
